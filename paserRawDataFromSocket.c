@@ -20,11 +20,11 @@ void parse_ethernet(const uint8_t *buffer) {
            eth->h_dest[0], eth->h_dest[1], eth->h_dest[2],
            eth->h_dest[3], eth->h_dest[4], eth->h_dest[5]);
 
-    printf("  Source MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
+    printf("Source MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
            eth->h_source[0], eth->h_source[1], eth->h_source[2],
            eth->h_source[3], eth->h_source[4], eth->h_source[5]);
 
-    printf("  Protocol: 0x%04x\n", ntohs(eth->h_proto));
+    printf("Protocol: 0x%04x\n", ntohs(eth->h_proto));
 }
 
 // 解析 IP 標頭
