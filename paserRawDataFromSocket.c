@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <locale.h>
 
 // parser eth header 
 void parse_ethernet(const uint8_t *buffer) {
@@ -78,12 +79,35 @@ void parse_udp(const uint8_t *buffer) {
 
 // 打印數據部分 (Payload)
 void print_payload(const uint8_t *buffer, size_t len) {
+    setlocale(LC_CTYPE, "");  // Set locale for Unicode support
     printf("Payload (%zu bytes):\n", len);
-    for (size_t i = 0; i < len; i++) {
-        printf("%02x ", buffer[i]);
-        if ((i + 1) % 16 == 0) {
-            printf("\n");
+    
+    for (size_t i = 0; i < len; i += 16) {
+        // Print the offset
+        printf("%04zx  ", i);
+
+        // Print the hex representation
+        for (size_t j = 0; j < 16; j++) {
+            if (i + j < len) {
+                printf("%02x ", buffer[i + j]);
+            } else {
+                printf("   ");  // Padding for rows less than 16 bytes
+            }
         }
+
+        // Print ASCII representation
+        printf(" | ");
+        for (size_t j = 0; j < 16; j++) {
+            if (i + j < len) {
+                if (buffer[i + j] >= 32 && buffer[i + j] <= 126) {
+                    printf("%c", buffer[i + j]);
+                } else {
+                    printf(".");  // Replace non-printable characters with '.'
+                }
+            }
+        }
+
+        printf("\n");  // Move to the next line
     }
     printf("\n");
 }
