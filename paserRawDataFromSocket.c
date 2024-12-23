@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <locale.h>
 
-// parser eth header 
+// parser eth header  -> Data Link layer , Physical Layer
 void parse_ethernet(const uint8_t *buffer) {
     const struct ethhdr *eth = (struct ethhdr *)buffer;
 
@@ -28,7 +28,7 @@ void parse_ethernet(const uint8_t *buffer) {
     printf("Protocol: 0x%04x\n", ntohs(eth->h_proto));
 }
 
-// 解析 IP 標頭
+// paser IP header -> IP , ICMP , ARP
 void parse_ip(const uint8_t *buffer) {
     const struct iphdr *ip = (struct iphdr *)(buffer + sizeof(struct ethhdr));
 
@@ -49,7 +49,7 @@ void parse_ip(const uint8_t *buffer) {
     printf("  Destination IP: %s\n", inet_ntoa(dest_ip));
 }
 
-// 解析 TCP 標頭
+// 解析 TCP 標頭 
 void parse_tcp(const uint8_t *buffer) {
     const struct iphdr *ip = (struct iphdr *)(buffer + sizeof(struct ethhdr));
     const struct tcphdr *tcp = (struct tcphdr *)(buffer + sizeof(struct ethhdr) + ip->ihl * 4);
